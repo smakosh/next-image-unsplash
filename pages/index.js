@@ -1,45 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import Unsplash from "unsplash-js";
+import styles from "../styles/Home.module.scss";
 
 const Index = ({ collections }) => (
-	<div
-		style={{
-			maxWidth: 960,
-			margin: "0 auto",
-			display: "flex",
-			justifyContent: "center",
-			flexDirection: "column",
-			alignItems: "center",
-		}}
-	>
+	<div className={styles.container}>
 		{collections.map(({ id, title, cover_photo }) => (
-			<div
-				key={id}
-				style={{
-					marginBottom: 50,
-					width: 500,
-				}}
-			>
+			<div key={id} className={styles.card}>
 				<Link href={`/collection/${id}`}>
-					<a
-						style={{
-							margin: "2rem 0",
-							fontSize: 16,
-							display: "block",
-							fontWeight: "bold",
-							textDecoration: "underline",
-							color: "tomato",
-						}}
-					>
-						{title}
+					<a className={styles.link}>{title}</a>
+				</Link>
+				<Link href={`/collection/${id}`}>
+					<a>
+						<Image
+							src={cover_photo.urls.full}
+							width={cover_photo.width}
+							height={cover_photo.height}
+						/>
 					</a>
 				</Link>
-				<Image
-					src={cover_photo.urls.full}
-					width={cover_photo.width}
-					height={cover_photo.height}
-				/>
 			</div>
 		))}
 	</div>

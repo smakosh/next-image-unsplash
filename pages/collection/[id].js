@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Unsplash from "unsplash-js";
 import { useRouter } from "next/router";
+import styles from "../../styles/Home.module.scss";
 
 const Collection = ({ photos }) => {
 	const router = useRouter();
@@ -11,39 +12,12 @@ const Collection = ({ photos }) => {
 	}
 
 	return (
-		<div
-			style={{
-				padding: "2rem 0",
-				maxWidth: 960,
-				margin: "0 auto",
-				display: "flex",
-				justifyContent: "center",
-				flexDirection: "column",
-				alignItems: "center",
-			}}
-		>
+		<div className={styles.container}>
 			<Link href="/">
-				<a
-					style={{
-						margin: "2rem 0",
-						fontSize: 16,
-						display: "block",
-						fontWeight: "bold",
-						textDecoration: "underline",
-						color: "tomato",
-					}}
-				>
-					Go back
-				</a>
+				<a className={styles.link}>Go back</a>
 			</Link>
 			{photos.map(({ id, urls, width, height }) => (
-				<div
-					key={id}
-					style={{
-						marginBottom: 50,
-						width: 500,
-					}}
-				>
+				<div key={id} className={styles.card}>
 					<Image src={urls.full} width={width} height={height} />
 				</div>
 			))}
