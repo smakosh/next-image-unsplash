@@ -37,8 +37,8 @@ const Collection = ({ photos }: CollectionProps) => {
 						placeholder={
 							<Blurhash
 								hash={blur_hash}
-								width={600}
-								height={600}
+								width={500}
+								height={350}
 								resolutionX={32}
 								resolutionY={32}
 								punch={1}
