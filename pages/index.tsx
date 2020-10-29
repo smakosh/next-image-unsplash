@@ -1,10 +1,11 @@
-import { Blurhash } from "react-blurhash";
+// import { Blurhash } from "react-blurhash";
+import { FC } from "react";
 import { GetStaticProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Unsplash from "unsplash-js";
-import Image from "../components/Image";
+// import Image from "../components/Image";
 import styles from "../styles/Home.module.scss";
-import { FC } from "react";
 
 interface Collections {
 	collections: {
@@ -14,7 +15,7 @@ interface Collections {
 			urls: { full: string };
 			width: number;
 			height: number;
-			blur_hash: string;
+			// blur_hash: string;
 		};
 	}[];
 }
@@ -32,16 +33,16 @@ const Index: FC<Collections> = ({ collections }) => (
 							src={cover_photo.urls.full}
 							width={cover_photo.width}
 							height={cover_photo.height}
-							placeholder={
-								<Blurhash
-									hash={cover_photo.blur_hash}
-									width={500}
-									height={350}
-									resolutionX={32}
-									resolutionY={32}
-									punch={1}
-								/>
-							}
+						// placeholder={
+						// 	<Blurhash
+						// 		hash={cover_photo.blur_hash}
+						// 		width={500}
+						// 		height={350}
+						// 		resolutionX={32}
+						// 		resolutionY={32}
+						// 		punch={1}
+						// 	/>
+						// }
 						/>
 					</a>
 				</Link>

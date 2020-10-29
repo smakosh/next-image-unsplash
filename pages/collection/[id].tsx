@@ -1,6 +1,7 @@
 import { GetStaticPropsContext } from "next";
-import Image from "../../components/Image";
-import { Blurhash } from "react-blurhash";
+// import Image from "../../components/Image";
+// import { Blurhash } from "react-blurhash";
+import Image from "next/image";
 import Link from "next/link";
 import Unsplash from "unsplash-js";
 import { useRouter } from "next/router";
@@ -12,7 +13,7 @@ interface CollectionProps {
 		urls: { full: string };
 		width: number;
 		height: number;
-		blur_hash: string;
+		// blur_hash: string;
 	}[];
 }
 
@@ -28,22 +29,22 @@ const Collection = ({ photos }: CollectionProps) => {
 			<Link href="/">
 				<a className={styles.link}>Go back</a>
 			</Link>
-			{photos.map(({ id, urls, width, height, blur_hash }) => (
+			{photos.map(({ id, urls, width, height }) => (
 				<div key={id} className={styles.card}>
 					<Image
 						src={urls.full}
 						width={width}
 						height={height}
-						placeholder={
-							<Blurhash
-								hash={blur_hash}
-								width={500}
-								height={350}
-								resolutionX={32}
-								resolutionY={32}
-								punch={1}
-							/>
-						}
+					// placeholder={
+					// 	<Blurhash
+					// 		hash={blur_hash}
+					// 		width={500}
+					// 		height={350}
+					// 		resolutionX={32}
+					// 		resolutionY={32}
+					// 		punch={1}
+					// 	/>
+					// }
 					/>
 				</div>
 			))}
