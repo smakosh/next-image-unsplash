@@ -1,21 +1,20 @@
-import { GetStaticPropsContext } from "next";
-// import Image from "../../components/Image";
-// import { Blurhash } from "react-blurhash";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Unsplash from "unsplash-js";
 import { useRouter } from "next/router";
-import styles from "../../styles/Home.module.scss";
+import Unsplash from "unsplash-js";
+import styles from "styles/Home.module.scss";
+import shimmer, { toBase64 } from "utils/shimmer";
 
-interface CollectionProps {
+type CollectionProps = {
 	photos: {
 		id: string;
 		urls: { full: string };
 		width: number;
 		height: number;
-		// blur_hash: string;
+		// blur_hash: string; I wish if this gets added to the Next js image component as a prop
 	}[];
-}
+};
 
 const Collection = ({ photos }: CollectionProps) => {
 	const router = useRouter();
@@ -35,16 +34,11 @@ const Collection = ({ photos }: CollectionProps) => {
 						src={urls.full}
 						width={width}
 						height={height}
-					// placeholder={
-					// 	<Blurhash
-					// 		hash={blur_hash}
-					// 		width={500}
-					// 		height={350}
-					// 		resolutionX={32}
-					// 		resolutionY={32}
-					// 		punch={1}
-					// 	/>
-					// }
+						alt=""
+						blurDataURL={`data:image/svg+xml;base64,${toBase64(
+							shimmer(700, 475)
+						)}`}
+						placeholder="blur"
 					/>
 				</div>
 			))}
@@ -54,24 +48,26 @@ const Collection = ({ photos }: CollectionProps) => {
 
 export default Collection;
 
-export const getStaticPaths = async () => ({
+export const getStaticPaths: GetStaticPaths = async () => ({
 	paths: [],
-	fallback: true,
+	fallback: "blocking",
 });
 
-export const getStaticProps = async (
-	ctx: GetStaticPropsContext<{ id: string }>
-) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+	if (!process.env.APP_ACCESS_KEY) {
+		throw new Error("APP_ACCESS_KEY missing");
+	}
+
 	if (!ctx.params?.id) {
 		throw new Error("id missing");
 	}
 
 	const unsplash = new Unsplash({
-		accessKey: process.env.APP_ACCESS_KEY || "",
+		accessKey: process.env.APP_ACCESS_KEY,
 	});
 
 	const data = await unsplash.collections.getCollectionPhotos(
-		parseInt(ctx.params.id, 10)
+		Number(ctx.params.id)
 	);
 	const photos = await data.json();
 

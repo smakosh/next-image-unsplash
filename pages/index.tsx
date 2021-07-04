@@ -1,13 +1,11 @@
-// import { Blurhash } from "react-blurhash";
-import { FC } from "react";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Unsplash from "unsplash-js";
-// import Image from "../components/Image";
-import styles from "../styles/Home.module.scss";
+import styles from "styles/Home.module.scss";
+import shimmer, { toBase64 } from "utils/shimmer";
 
-interface Collections {
+type Collections = {
 	collections: {
 		id: string;
 		title: string;
@@ -18,9 +16,9 @@ interface Collections {
 			// blur_hash: string;
 		};
 	}[];
-}
+};
 
-const Index: FC<Collections> = ({ collections }) => (
+const Home = ({ collections }: Collections) => (
 	<div className={styles.container}>
 		{collections.map(({ id, title, cover_photo }) => (
 			<div key={id} className={styles.card}>
@@ -33,16 +31,11 @@ const Index: FC<Collections> = ({ collections }) => (
 							src={cover_photo.urls.full}
 							width={cover_photo.width}
 							height={cover_photo.height}
-						// placeholder={
-						// 	<Blurhash
-						// 		hash={cover_photo.blur_hash}
-						// 		width={500}
-						// 		height={350}
-						// 		resolutionX={32}
-						// 		resolutionY={32}
-						// 		punch={1}
-						// 	/>
-						// }
+							alt={title}
+							placeholder="blur"
+							blurDataURL={`data:image/svg+xml;base64,${toBase64(
+								shimmer(700, 475)
+							)}`}
 						/>
 					</a>
 				</Link>
@@ -51,11 +44,15 @@ const Index: FC<Collections> = ({ collections }) => (
 	</div>
 );
 
-export default Index;
+export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
+	if (!process.env.APP_ACCESS_KEY) {
+		throw new Error("APP_ACCESS_KEY missing");
+	}
+
 	const unsplash = new Unsplash({
-		accessKey: process.env.APP_ACCESS_KEY || "",
+		accessKey: process.env.APP_ACCESS_KEY,
 	});
 
 	const data = await unsplash.users.collections("smakosh");
